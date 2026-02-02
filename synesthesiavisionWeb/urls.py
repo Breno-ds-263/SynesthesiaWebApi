@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('auth/', include('users.urls')),
     path('media/', include('media.urls')),
+    path('new/', include('news.urls')),
 ]
 
 #  SOMENTE em desenvolvimento
