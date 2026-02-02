@@ -1,0 +1,1 @@
+Ola meu nome é breno, estou aprendendo a programar com django mas pelo que posso percerber estou me desenvolvendo de forma rapida e segura.
