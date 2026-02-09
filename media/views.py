@@ -29,7 +29,7 @@ class MediaView(View):
 
         media = Media.objects.create(
             FileName=file.name,
-            Path=f"/media/{folder}/{file.name}",
+            Path=f"/media/{file.name}",
             TypeFile=file.content_type,
             SizeBytes=file.size,
             administrator_id= request.admin.id

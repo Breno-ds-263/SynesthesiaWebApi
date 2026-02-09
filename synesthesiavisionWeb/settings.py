@@ -24,10 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-k5m(kbr!qnma0rd1#uaqp3-*5bs4(=@c^zyv&uylu4uj@0un5r'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production
 
-ALLOWED_HOSTS = []
+DEBUG = False
+
+ALLOWED_HOSTS = [ "labgeo3.recife.ifpe.edu.br",]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 
 # Application definition
@@ -57,8 +60,6 @@ MIDDLEWARE = [
     # 'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = 'synesthesiavisionWeb.urls'

@@ -3,9 +3,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('auth/', include('users.urls')),
-    path('media/', include('media.urls')),
-    path('new/', include('news.urls')),
+    path('ApiSyn/auth/', include('users.urls')),
+    path('ApiSyn/media/', include('media.urls')),
+    path('ApiSyn/new/', include('news.urls')),
 ]
 
 #  SOMENTE em desenvolvimento
