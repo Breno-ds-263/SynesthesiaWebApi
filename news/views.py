@@ -39,6 +39,12 @@ class NewsView(View):
         except Media.DoesNotExist:
             return JsonResponse({"error": "Media não encontrada"}, status=404)
 
+    def get(self, request):
+        news = News.objects.all().values('Title','Summary','NewsLink')
+
+        return  JsonResponse(list(news), safe=False)
+
+
 
 
 

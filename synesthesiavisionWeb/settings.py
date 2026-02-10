@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +29,9 @@ SECRET_KEY = 'django-insecure-k5m(kbr!qnma0rd1#uaqp3-*5bs4(=@c^zyv&uylu4uj@0un5r
 
 DEBUG = False
 
-ALLOWED_HOSTS = [ "labgeo3.recife.ifpe.edu.br",]
+ALLOWED_HOSTS = [ "labgeo3.recife.ifpe.edu.br",
+                   "127.0.0.1",
+                ]
 CORS_ALLOW_ALL_ORIGINS = True
 
 
@@ -87,9 +90,13 @@ WSGI_APPLICATION = 'synesthesiavisionWeb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config("DB_NAME"),
+            "USER": config("DB_USER"),
+            "PASSWORD": config("DB_PASSWORD"),
+            "HOST": config("DB_HOST"),
+            "PORT": config("DB_PORT"),
+        }
 }
 
 

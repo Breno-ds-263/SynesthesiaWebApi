@@ -14,25 +14,35 @@ from .models import Admin
 @method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(View):
     def post(self, request):
+
+        if not request.body:
+            return JsonResponse({"error": "Body vazio"}, status=400)
+
         try:
-            data = json.loads(request.body)
-            email = data.get('email')
+            data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "JSON inválido"}, status=400)
 
+        required_fields = ['name', 'email', 'password']
+        for field in required_fields:
+            if not data.get(field):
+                return JsonResponse(
+                    {"error": f"Campo '{field}' é obrigatório"},
+                    status=400
+                )
 
-            if Admin.objects.filter(email=email).exists():
-                return JsonResponse({"Message": "Email já registrado!"}, status=400)
+        email = data['email']
 
+        if Admin.objects.filter(email=email).exists():
+            return JsonResponse({"error": "Email já registrado"}, status=400)
 
-            admin = Admin.objects.create(
-                name=data['name'],
-                email=data['email'],
-                password=make_password(data['password'])
-            )
+        Admin.objects.create(
+            name=data['name'],
+            email=email,
+            password=make_password(data['password'])
+        )
 
-
-            return JsonResponse({"message": "Admin criado com sucesso"}, status=201)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
+        return JsonResponse({"message": "Admin criado com sucesso"}, status=201)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
