@@ -36,12 +36,13 @@ class MediaView(View):
         )
 
         return JsonResponse({
+            "id": media.id,
             "fileName": media.FileName,
             "path": media.Path
         }, status=201)
 
     def get(self, request):
-        medias = Media.objects.all().values('FileName', 'Path')
+        medias = Media.objects.all().values('id','FileName', 'Path')
 
         return JsonResponse(list(medias), safe=False)
 

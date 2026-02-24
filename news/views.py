@@ -20,29 +20,52 @@ class NewsView(View):
 
             media = None
             if mediaId:
-                media = Media.objects.get(id=mediaId)
+                media = Media.objects.get(id = mediaId)
 
             new = News.objects.create(
-                Title = data['Title'],
-                Summary = data['Summary'],
-                NewsLink = data['NewsLink'],
-                MediaFiles = media,
+                Title=data['Title'],
+                Summary=data['Summary'],
+                NewsLink=data['NewsLink'],
+                MediaFiles=media,
                 Administrator_id=request.admin.id
             )
 
-            return JsonResponse({"Message": "noticia criada com sucesso"})
+            return JsonResponse({"Message": "noticia criada com sucesso"}, status=201)
 
-
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
 
         except Media.DoesNotExist:
             return JsonResponse({"error": "Media não encontrada"}, status=404)
 
-    def get(self, request):
-        news = News.objects.all().values('Title','Summary','NewsLink')
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
-        return  JsonResponse(list(news), safe=False)
+    def get(self, request):
+        news_list = News.objects.select_related('MediaFiles').all()
+
+        data = []
+
+        for news in news_list:
+            media_data = None
+
+            if news.MediaFiles:
+                media_data = {
+                    "id": news.MediaFiles.id,
+                    "FileName": news.MediaFiles.FileName,
+                    "Path": news.MediaFiles.Path,
+                    "TypeFile": news.MediaFiles.TypeFile,
+                    "SizeBytes": news.MediaFiles.SizeBytes,
+                    "CreateAt": news.MediaFiles.CreateAt,
+                }
+
+            data.append({
+                "Title": news.Title,
+                "Summary": news.Summary,
+                "NewsLink": news.NewsLink,
+                "MediaFiles": media_data
+            })
+
+        return JsonResponse(data, safe=False, status=200)
+
 
 
 
