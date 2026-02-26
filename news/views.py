@@ -58,6 +58,7 @@ class NewsView(View):
                 }
 
             data.append({
+                "id": news.id,
                 "Title": news.Title,
                 "Summary": news.Summary,
                 "NewsLink": news.NewsLink,
@@ -65,6 +66,30 @@ class NewsView(View):
             })
 
         return JsonResponse(data, safe=False, status=200)
+
+    def delete(self, request, id):
+        try:
+
+            new = News.objects.get(id=id)
+
+
+            file = new.MediaFiles
+
+
+            new.delete()
+
+
+            if file:
+                file.delete()
+
+            return JsonResponse({"Message": "Notícia e mídia associada excluídas com sucesso"}, status=200)
+
+        except News.DoesNotExist:
+            return JsonResponse({"error": "Notícia não encontrada"}, status=404)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
 
 
 
