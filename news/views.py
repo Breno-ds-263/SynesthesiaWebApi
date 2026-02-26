@@ -10,9 +10,9 @@ from media.models import Media
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(jwt_required, name='dispatch')
 class NewsView(View):
 
+    @method_decorator(jwt_required)
     def post(self, request):
         try:
             data = json.loads(request.body)
@@ -67,6 +67,7 @@ class NewsView(View):
 
         return JsonResponse(data, safe=False, status=200)
 
+    @method_decorator(jwt_required)
     def delete(self, request, id):
         try:
 
