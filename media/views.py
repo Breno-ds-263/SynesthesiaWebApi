@@ -60,6 +60,8 @@ class MediaView(View):
 
             media.delete()
 
+
+
             return JsonResponse(
                 {"message": "Arquivo removido com sucesso"},
                 status=200
