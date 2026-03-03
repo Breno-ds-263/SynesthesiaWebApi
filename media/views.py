@@ -17,6 +17,15 @@ class MediaView(View):
 
         file = request.FILES['file']
 
+        existingMedia = Media.objects.filter(FileName=file.name).first()
+
+        if existingMedia:
+            return JsonResponse({"message":"Arquivo já existe no banco de dados",
+                "id": existingMedia.id,
+                "fileName": existingMedia.FileName,
+                "path": existingMedia.Path
+            }, status=200)
+
         folder = 'uploads/images'
         physical_path = os.path.join(settings.MEDIA_ROOT, folder)
         os.makedirs(physical_path, exist_ok=True)
@@ -34,6 +43,7 @@ class MediaView(View):
             SizeBytes=file.size,
             administrator_id= request.admin.id
         )
+
 
         return JsonResponse({
             "id": media.id,

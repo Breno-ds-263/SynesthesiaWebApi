@@ -25,6 +25,7 @@ class MaterialsView(View):
             if mediaId:
                 media = Media.objects.get(id=mediaId)
 
+
             materials = Materials.objects.create(
                 Title=data['Title'],
                 Summary=data['Summary'],
