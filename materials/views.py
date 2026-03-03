@@ -43,9 +43,32 @@ class MaterialsView(View):
 
 
     def get(self,request):
-        materials = Materials.objects.all().values('id','Title', 'Summary','MaterialsLink','MediaFiles')
+        materialsList = Materials.objects.select_related('MediaFiles').all()
 
-        return JsonResponse(list(materials), safe=False)
+        data = []
+
+        for materials in materialsList:
+            media_data = None
+
+            if materials.MediaFiles:
+                media_data = {
+                    "id": materials.MediaFiles.id,
+                    "FileName": materials.MediaFiles.FileName,
+                    "Path": materials.MediaFiles.Path,
+                    "TypeFile": materials.MediaFiles.TypeFile,
+                    "SizeBytes": materials.MediaFiles.SizeBytes,
+                    "CreateAt": materials.MediaFiles.CreateAt,
+                }
+
+            data.append({
+                "id": materials.id,
+                "Title": materials.Title,
+                "Summary": materials.Summary,
+                "NewsLink": materials.MaterialsLink,
+                "MediaFiles": media_data
+            })
+
+        return JsonResponse(data, safe=False, status=200)
 
     @method_decorator(jwt_required)
     def delete(self,request,id):
