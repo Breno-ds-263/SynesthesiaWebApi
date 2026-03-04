@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'media',
     'news',
     'materials',
+    'video',
 ]
 
 MIDDLEWARE = [
