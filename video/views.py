@@ -28,4 +28,22 @@ class VideoView(View):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 
+    def get(self,request):
+        try:
+            videos = Video.objects.all()
+
+            data = []
+
+            for video in videos:
+                data.append({
+                    'id': video.id,
+                    'Title': video.Title,
+                    'VideoUrl': video.VideoUrl,
+                })
+
+
+            return JsonResponse(data,safe=False,status=200)
+        except Exception as e:
+            return JsonResponse({"Error": str(e)}, status=400)
+
 

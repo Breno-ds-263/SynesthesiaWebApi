@@ -42,6 +42,7 @@ class NewsView(View):
             return JsonResponse({"error": str(e)}, status=400)
 
     def get(self, request):
+
         news_list = News.objects.all().order_by("-CreateAt")
 
         data = []
