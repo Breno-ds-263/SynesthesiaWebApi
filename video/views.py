@@ -46,4 +46,18 @@ class VideoView(View):
         except Exception as e:
             return JsonResponse({"Error": str(e)}, status=400)
 
+    @method_decorator(jwt_required)
+    def delete(self, request, id):
+        try:
+            video = Video.objects.get(id=id)
+
+            video.delete()
+
+            return JsonResponse({"Message": "Video deletado com sucesso"})
+
+        except Exception as e:
+            return JsonResponse({"Error": str(e)}, status=400)
+
+
+
 
