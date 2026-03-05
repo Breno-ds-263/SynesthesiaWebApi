@@ -1,4 +1,6 @@
 import json
+from operator import attrgetter
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -40,7 +42,7 @@ class NewsView(View):
             return JsonResponse({"error": str(e)}, status=400)
 
     def get(self, request):
-        news_list = News.objects.select_related('MediaFiles').all()
+        news_list = News.objects.all().order_by("-CreateAt")
 
         data = []
 
@@ -54,7 +56,7 @@ class NewsView(View):
                     "Path": news.MediaFiles.Path,
                     "TypeFile": news.MediaFiles.TypeFile,
                     "SizeBytes": news.MediaFiles.SizeBytes,
-                    "CreateAt": news.MediaFiles.CreateAt,
+                    "CreateAt": news.MediaFiles.CreateAt
                 }
 
             data.append({
@@ -62,8 +64,11 @@ class NewsView(View):
                 "Title": news.Title,
                 "Summary": news.Summary,
                 "NewsLink": news.NewsLink,
+                "CreateAt": news.CreateAt,
                 "MediaFiles": media_data
+
             })
+
 
         return JsonResponse(data, safe=False, status=200)
 
