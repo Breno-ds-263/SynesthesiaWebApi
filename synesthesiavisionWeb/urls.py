@@ -8,6 +8,7 @@ urlpatterns = [
     path('ApiSyn/new/', include('news.urls')),
     path('ApiSyn/materials', include('materials.urls')),
     path('ApiSyn/videos', include('video.urls')),
+    path('ApiSyn/card', include('cards.urls')),
 ]
 
 #  SOMENTE em desenvolvimento

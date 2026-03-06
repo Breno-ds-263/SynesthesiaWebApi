@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'news',
     'materials',
     'video',
+    'cards',
 ]
 
 MIDDLEWARE = [
