@@ -77,6 +77,37 @@ class CardView(View):
         except Exception as e:
             return JsonResponse({"Error": str(e)}, status=500)
 
+    @method_decorator(jwt_required)
+    def put(self, request, id):
+        try:
+            card = Card.objects.get(id=id)
+
+            data = json.loads(request.body)
+
+            media_id = data.get('MediaFiles')
+            if media_id:
+                try:
+                    media = Media.objects.get(id=media_id)
+                    card.MediaFiles = media
+                except Media.DoesNotExist:
+                    return JsonResponse({"error": "Media não encontrada"}, status=404)
+
+            card.Name = data.get('Name', card.Name)
+            card.EducationLevel = data.get('EducationLevel', card.EducationLevel)
+            card.Role = data.get('Role', card.Role)
+            card.LinkLattes = data.get('LinkLattes', card.LinkLattes)
+            card.Gmail = data.get('Gmail', card.Gmail)
+            card.Linked = data.get('Linked', card.Linked)
+
+            card.save()
+
+            return JsonResponse({"Message": "Card atualizado com sucesso"}, status=200)
+
+        except Card.DoesNotExist:
+            return JsonResponse({"error": "Card não encontrado"}, status=404)
+        except Exception as e:
+            return JsonResponse({"Error": str(e)}, status=500)
+
 
 
     @method_decorator(jwt_required)
