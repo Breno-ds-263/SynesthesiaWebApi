@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'materials',
     'video',
     'cards',
+    'events',
 ]
 
 MIDDLEWARE = [
