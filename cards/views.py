@@ -25,6 +25,9 @@ class CardView(View):
                 Name=data['Name'],
                 EducationLevel=data['EducationLevel'],
                 Role=data['Role'],
+                LinkLattes =data['LinkLattes'],
+                Gmail=data['Gmail'],
+                Linked=data['Linked'],
                 MediaFiles=media,
                 Administrator_id=request.admin.id
             )
@@ -62,6 +65,9 @@ class CardView(View):
                     "Name": card.Name,
                     "EducationLevel": card.EducationLevel,
                     "Role": card.Role,
+                    "LinkLattes": card.LinkLattes,
+                    "Gmail": card.Gmail,
+                    "Linked": card.Linked,
                     "CreateAt": card.CreateAt,
                     "MediaFiles": mediaData
                 })
@@ -70,6 +76,8 @@ class CardView(View):
 
         except Exception as e:
             return JsonResponse({"Error": str(e)}, status=500)
+
+
 
     @method_decorator(jwt_required)
     def delete(self,request, id):
