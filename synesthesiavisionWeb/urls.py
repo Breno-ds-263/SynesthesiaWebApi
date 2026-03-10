@@ -4,8 +4,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('ApiSyn/auth/', include('users.urls')),
-    path('ApiSyn/media/', include('media.urls')),
-    path('ApiSyn/new/', include('news.urls')),
+    path('ApiSyn/media', include('media.urls')),
+    path('ApiSyn/new', include('news.urls')),
     path('ApiSyn/materials', include('materials.urls')),
     path('ApiSyn/videos', include('video.urls')),
     path('ApiSyn/card', include('cards.urls')),
