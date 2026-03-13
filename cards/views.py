@@ -41,26 +41,22 @@ class CardView(View):
 
 
 
-    def get(self,request):
+    def get(self,request, id=None):
         try:
-            cards = Card.objects.all()
-
-            data=[]
-
-            for card in cards:
+            if id:
+                card = Card.objects.get(id=id)
                 mediaData = None
-
                 if card.MediaFiles:
-                    mediaData= {
-                    "id": card.MediaFiles.id,
-                    "FileName": card.MediaFiles.FileName,
-                    "Path": card.MediaFiles.Path,
-                    "TypeFile": card.MediaFiles.TypeFile,
-                    "SizeBytes": card.MediaFiles.SizeBytes,
-                    "CreateAt": card.MediaFiles.CreateAt
-                }
+                    mediaData = {
+                        "id": card.MediaFiles.id,
+                        "FileName": card.MediaFiles.FileName,
+                        "Path": card.MediaFiles.Path,
+                        "TypeFile": card.MediaFiles.TypeFile,
+                        "SizeBytes": card.MediaFiles.SizeBytes,
+                        "CreateAt": card.MediaFiles.CreateAt
+                    }
 
-                data.append({
+                return JsonResponse({
                     "id": card.id,
                     "Name": card.Name,
                     "EducationLevel": card.EducationLevel,
@@ -70,12 +66,45 @@ class CardView(View):
                     "Linked": card.Linked,
                     "CreateAt": card.CreateAt,
                     "MediaFiles": mediaData
-                })
+                }, status=200)
+            else:
+                cards = Card.objects.all()
 
-            return JsonResponse(data, safe=False, status=200)
+                data = []
+
+                for card in cards:
+                    mediaData = None
+
+                    if card.MediaFiles:
+                        mediaData = {
+                            "id": card.MediaFiles.id,
+                            "FileName": card.MediaFiles.FileName,
+                            "Path": card.MediaFiles.Path,
+                            "TypeFile": card.MediaFiles.TypeFile,
+                            "SizeBytes": card.MediaFiles.SizeBytes,
+                            "CreateAt": card.MediaFiles.CreateAt
+                        }
+
+                    data.append({
+                        "id": card.id,
+                        "Name": card.Name,
+                        "EducationLevel": card.EducationLevel,
+                        "Role": card.Role,
+                        "LinkLattes": card.LinkLattes,
+                        "Gmail": card.Gmail,
+                        "Linked": card.Linked,
+                        "CreateAt": card.CreateAt,
+                        "MediaFiles": mediaData
+                    })
+
+                return JsonResponse(data, safe=False, status=200)
 
         except Exception as e:
             return JsonResponse({"Error": str(e)}, status=500)
+
+
+
+
 
     @method_decorator(jwt_required)
     def put(self, request, id):
