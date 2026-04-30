@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'video',
     'cards',
     'events',
+    'article',
 ]
 
 MIDDLEWARE = [

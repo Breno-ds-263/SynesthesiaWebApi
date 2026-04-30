@@ -10,9 +10,10 @@ urlpatterns = [
     path('ApiSyn/videos', include('video.urls')),
     path('ApiSyn/card', include('cards.urls')),
     path('ApiSyn/events', include('events.urls')),
+    path('ApiSyn/articles', include('article.urls'))
 ]
 
-#  SOMENTE em desenvolvimento
+
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
