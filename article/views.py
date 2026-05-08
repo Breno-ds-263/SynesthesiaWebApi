@@ -18,6 +18,13 @@ class ArticlesView(View):
         try:
             data = json.loads(request.body)
 
+            mediaId = data.get('MediaFiles')
+
+            media = None
+
+            if mediaId:
+                media = Media.objects.get(id=mediaId)
+
 
             article = Articles.objects.create(
                 Title = data['Title'],
@@ -25,6 +32,7 @@ class ArticlesView(View):
                 Tag = data['Tag'],
                 Event = data['Event'],
                 Year = data['Year'],
+                MediaFiles=media,
                 ArticleLink = data['ArticleLink'],
                 Administrator_id=request.admin.id
             )
@@ -45,14 +53,29 @@ class ArticlesView(View):
             data = []
 
             for article in articlesList:
-                data.append({
-                    "id": article.id,
-                    "Summary": article.Summary,
-                    "Tag": article.Tag,
-                    "Event": article.Event,
-                    "Year": article.Year,
-                    "ArticleLink": article.ArticleLink
-                })
+
+                for article in articlesList:
+                    media_data = None
+
+                    if article.MediaFiles:
+                        media_data = {
+                            "id": article.MediaFiles.id,
+                            "FileName": article.MediaFiles.FileName,
+                            "Path": article.MediaFiles.Path,
+                            "TypeFile": article.MediaFiles.TypeFile,
+                            "SizeBytes": article.MediaFiles.SizeBytes,
+                            "CreateAt": article.MediaFiles.CreateAt,
+                        }
+
+                    data.append({
+                        "id": article.id,
+                        "Summary": article.Summary,
+                        "Tag": article.Tag,
+                        "Event": article.Event,
+                        "Year": article.Year,
+                        "MediaFiles": media_data,
+                        "ArticleLink": article.ArticleLink
+                    })
 
             return JsonResponse(data, safe=False, status=200)
 
@@ -65,7 +88,12 @@ class ArticlesView(View):
         try:
             article = Articles.objects.get(id=id)
 
+            file = article.MediaFiles
+
             article.delete()
+
+            if file:
+                file.delete()
 
             return JsonResponse({"Message": "Evento apagado com sucesso"}, status=200)
 
