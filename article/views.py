@@ -33,7 +33,7 @@ class ArticlesView(View):
                 Event = data['Event'],
                 Year = data['Year'],
                 MediaFiles=media,
-                ArticleLink = data['ArticleLink'],
+                ArticleLink=data.get('ArticleLink'),
                 Administrator_id=request.admin.id
             )
 
