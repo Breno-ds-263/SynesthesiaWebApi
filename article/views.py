@@ -52,30 +52,31 @@ class ArticlesView(View):
 
             data = []
 
+
+
             for article in articlesList:
+                media_data = None
 
-                for article in articlesList:
-                    media_data = None
+                if article.MediaFiles:
+                    media_data = {
+                        "id": article.MediaFiles.id,
+                        "FileName": article.MediaFiles.FileName,
+                        "Path": article.MediaFiles.Path,
+                        "TypeFile": article.MediaFiles.TypeFile,
+                        "SizeBytes": article.MediaFiles.SizeBytes,
+                        "CreateAt": article.MediaFiles.CreateAt,
+                    }
 
-                    if article.MediaFiles:
-                        media_data = {
-                            "id": article.MediaFiles.id,
-                            "FileName": article.MediaFiles.FileName,
-                            "Path": article.MediaFiles.Path,
-                            "TypeFile": article.MediaFiles.TypeFile,
-                            "SizeBytes": article.MediaFiles.SizeBytes,
-                            "CreateAt": article.MediaFiles.CreateAt,
-                        }
-
-                    data.append({
-                        "id": article.id,
-                        "Summary": article.Summary,
-                        "Tag": article.Tag,
-                        "Event": article.Event,
-                        "Year": article.Year,
-                        "MediaFiles": media_data,
-                        "ArticleLink": article.ArticleLink
-                    })
+                data.append({
+                    "id": article.id,
+                    "Title": article.Title,
+                    "Summary": article.Summary,
+                    "Tag": article.Tag,
+                    "Event": article.Event,
+                    "Year": article.Year,
+                    "MediaFiles": media_data,
+                    "ArticleLink": article.ArticleLink
+                })
 
             return JsonResponse(data, safe=False, status=200)
 
